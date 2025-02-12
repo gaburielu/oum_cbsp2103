@@ -14,11 +14,7 @@ int main()
 {
     struct Event shakespear;
 
-    strcpy(shakespear.eventName, "Romeo and Juliet");
-    shakespear.eventID = 20;
-
-    printf("%s\n", shakespear.eventName);
-    printf("%d\n", shakespear.eventID);
+    printf(" this is annoying");
 
     return 0;
 }
