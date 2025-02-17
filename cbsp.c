@@ -36,38 +36,62 @@ void createEvents(struct Event events[])
     events[2].totalRevenue = (events[2].totalSeats - events[2].availableSeats) * events[2].price;
 }
 
-void readEvents(struct Event events[], int size)
+void readEventsSummary(struct Event events[], int totalEvent)
 {
+
+    for (int i = 0; i < totalEvent; i++)
     {
-        printf("\nEvent Information:\n");
-        for (int i = 0; i < size; i++)
-        {
-            printf("ID: %d | Name: %s | Available: %d/%d | Price: RM%.2f | Sales: RM%.2f\n",
-                   events[i].eventID, events[i].eventName, events[i].availableSeats, events[i].totalSeats, events[i].price, events[i].totalRevenue);
-        }
+        printf("ID: %d | Name: %s | Available: %d/%d | Price: RM%.2f | Sales(Before Discounts): RM %.2f\n",
+               events[i].eventID, events[i].eventName, events[i].availableSeats, events[i].totalSeats, events[i].price, events[i].totalRevenue);
     }
+}
+
+void displayConfirmation(struct Event events[], int totalEvent, char name[], char id[])
+{
+}
+
+void displayTotalRevenue(struct Event events[], int totalEvent)
+{
+    float total = 0;
+    for (int i = 0; i < totalEvent; i++)
+    {
+        total += events[i].totalRevenue;
+    }
+    printf("\nCurrent total sales(before discounts) for all events: RM%.2f\n", total);
+}
+
+void bookEvent(struct Event events[], int totalEvent)
+{
+    // Need to add data validation for this part?
+    char name[50];
+    int id;
+    printf("Enter the member name: ");
+    scanf("%s", name);
+    printf("Enter the member ID number (numbers only, 0 for no member ID): ");
+    scanf("%d", &id);
+    if (id == 0)
+    {
+        printf("No member ID");
+    }
+    //
+    printf("Name: %s, ID: %d\n", name, id);
+    printf("\nEnter an Event ID based on the following: ");
+    readEventsSummary(events, totalEvent);
 }
 
 int main()
 {
-
-    struct Event events[3];
+    int totalEvent = 3;
+    struct Event events[totalEvent];
     createEvents(events);
 
     bool app = true;
     int choice;
 
-    char name[50];
-    char id[10];
-
-    printf("\nEnter your name: ");
-    scanf(" %s", name);
-    printf("Enter your ID: ");
-    scanf("%s", id);
-
     while (app)
     {
-        printf("\nChoose an option: \n0. Exit The Program\n1. Make a booking\n2. Change member\n3. Show Event information\n-> ");
+        printf("\nChoose an option: \n0. Exit The Program\n1. Make A Booking");
+        printf("\n2. Show Event Information\n3. Show Total Sales\n-> ");
         scanf("%d", &choice);
 
         switch (choice)
@@ -77,13 +101,15 @@ int main()
             app = false;
             break;
         case 1:
-            printf("You selected Option 1.\n");
+            printf("You selected Option 1. make a booking\n");
+            bookEvent(events, totalEvent);
             break;
         case 2:
-            printf("You selected Option 2.\n");
+            printf("\nEvent Information:\n");
+            readEventsSummary(events, totalEvent);
             break;
         case 3:
-            readEvents(events, 3);
+            displayTotalRevenue(events, totalEvent);
             break;
 
         default:
