@@ -2,88 +2,38 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct Event
+char events[3][50] = {"Romeo and Juliet", "Istana Menanti", "Shrek the Musical"};
+int seats[3] = {500, 500, 400};
+float ticketPrice[3] = {50.80, 40.50, 60.00};
+float totalRevenue = 0;
+
+float bookTickets()
 {
-    char eventName[50];
-    int eventID;
-    int totalSeats;
-    int availableSeats;
-    float price;
-    float totalRevenue;
-};
-
-void createEvents(struct Event events[])
-{
-    strcpy(events[0].eventName, "Romeo and Juliet");
-    events[0].eventID = 101;
-    events[0].totalSeats = 500;
-    events[0].availableSeats = 100;
-    events[0].price = 60.0;
-    events[0].totalRevenue = (events[0].totalSeats - events[0].availableSeats) * events[0].price;
-
-    strcpy(events[1].eventName, "Istana Menanti");
-    events[1].eventID = 102;
-    events[1].totalSeats = 500;
-    events[1].availableSeats = 185;
-    events[1].price = 40.50;
-    events[1].totalRevenue = (events[1].totalSeats - events[1].availableSeats) * events[1].price;
-
-    strcpy(events[2].eventName, "Pride and Prejudice");
-    events[2].eventID = 103;
-    events[2].totalSeats = 500;
-    events[2].availableSeats = 452;
-    events[2].price = 50.80;
-    events[2].totalRevenue = (events[2].totalSeats - events[2].availableSeats) * events[2].price;
 }
 
-void readEventsSummary(struct Event events[], int totalEvent)
+float calculateDiscounts()
 {
+}
 
-    for (int i = 0; i < totalEvent; i++)
+float displayRevenue()
+{
+}
+
+void displayEvents()
+{
+    for (int i = 0; i < 3; i++)
     {
-        printf("ID: %d | Name: %s | Available: %d/%d | Price: RM%.2f | Sales(Before Discounts): RM %.2f\n",
-               events[i].eventID, events[i].eventName, events[i].availableSeats, events[i].totalSeats, events[i].price, events[i].totalRevenue);
+        printf("ID: %d | Available: %d | Price: RM%.2f | Event Name: %s  \n",
+               i, seats[i], ticketPrice[i], events[i]);
     }
 }
 
-void displayConfirmation(struct Event events[], int totalEvent, char name[], char id[])
+void generateSummary()
 {
-}
-
-void displayTotalRevenue(struct Event events[], int totalEvent)
-{
-    float total = 0;
-    for (int i = 0; i < totalEvent; i++)
-    {
-        total += events[i].totalRevenue;
-    }
-    printf("\nCurrent total sales(before discounts) for all events: RM%.2f\n", total);
-}
-
-void bookEvent(struct Event events[], int totalEvent)
-{
-    // Need to add data validation for this part?
-    char name[50];
-    int id;
-    printf("Enter the member name: ");
-    scanf("%s", name);
-    printf("Enter the member ID number (numbers only, 0 for no member ID): ");
-    scanf("%d", &id);
-    if (id == 0)
-    {
-        printf("No member ID");
-    }
-    //
-    printf("Name: %s, ID: %d\n", name, id);
-    printf("\nEnter an Event ID based on the following: ");
-    readEventsSummary(events, totalEvent);
 }
 
 int main()
 {
-    int totalEvent = 3;
-    struct Event events[totalEvent];
-    createEvents(events);
 
     bool app = true;
     int choice;
@@ -102,18 +52,49 @@ int main()
             break;
         case 1:
             printf("You selected Option 1. make a booking\n");
-            bookEvent(events, totalEvent);
+
+            char name[50];
+            int id;
+            printf("\nEnter the member name (No whitespace): ");
+            scanf("%s", name);
+            printf("Enter the member ID number (numbers only, 0 if no member ID): ");
+            scanf("%d", &id);
+            if (id == 0)
+            {
+                printf("No member ID");
+            }
+            printf("Name: %s, ID: %d\n\n", name, id);
+
+            int eventIndex = -1;
+            int attendees;
+            bool validEventID = false;
+            displayEvents();
+            printf("Enter an Event ID from the list: ");
+            scanf("%d", &eventIndex);
+
+            while (!validEventID)
+            {
+                if (eventIndex >= 0 && eventIndex <= 2)
+                {
+                    validEventID = true;
+                }
+                else
+                {
+                    printf("Enter a valid event ID: ");
+                    scanf("%d", &eventIndex);
+                }
+            }
+
             break;
         case 2:
             printf("\nEvent Information:\n");
-            readEventsSummary(events, totalEvent);
+            displayEvents();
             break;
         case 3:
-            displayTotalRevenue(events, totalEvent);
             break;
 
         default:
-            printf("Invalid selection. Please choose a number between 1 and 3.\n");
+            printf("Invalid selection. Please choose a option between 0 to 3.\n");
             break;
         }
     }
