@@ -43,13 +43,14 @@ void generateSummary(char events[][50], int seats[], float sales[], float totalS
     printf("Total sales for all event: %.2f \n", totalSales);
 }
 
-void generateConfirmation(char name[], int id, int seats[], int index, float price)
+void generateConfirmation(char events[][50], char name[], int id, int seats[], int index, float price, int numTickets)
 {
     char confirmationString[200];
-    printf("Booking successful! The ticket confirmation are as follows: \n");
+    printf("\nBooking successful! The ticket confirmation is as follows:\n");
     snprintf(confirmationString, sizeof(confirmationString),
-             "%d%s%d_%d",
-             id, name, index, seats[index]);
+             "Name: %s\nEvent: %s\nMember ID: %d\nNumber of Tickets: %d\nTotal Cost: %.2f",
+             name, events[index], id, numTickets, price);
+
     printf("%s\n", confirmationString);
 }
 
@@ -175,7 +176,7 @@ int main()
             {
                 eventSales[eventIndex] += costAfterDiscount;
                 totalRevenue += costAfterDiscount;
-                generateConfirmation(name, id, seats, eventIndex, costAfterDiscount);
+                generateConfirmation(events, name, id, seats, eventIndex, costAfterDiscount, numTickets);
                 generateSummary(events, seats, eventSales, totalRevenue, numberOfEvents);
             }
 
